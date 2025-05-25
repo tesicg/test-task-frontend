@@ -1,0 +1,350 @@
+<template>
+    <div class="container">
+        <div id="topLeft" class="top-left">
+            <div class="list" v-if="selectedItems.length > 0">
+                <div class="box" v-for="item in selectedItems" :key="item.id">
+                    <div>{{ item.name }}</div>
+                </div>
+            </div>
+            <div v-else class="empty-message">Select 1-6 items from the bottom left</div>
+        </div>
+        <div id="topRight" class="top-right">
+            <div class="list" v-if="selectedRightItem">
+                <div class="box">
+                    <div>{{ selectedRightItem.name }}</div>
+                </div>
+            </div>
+            <div v-else class="empty-message">Select 1 item from the bottom right</div>
+        </div>
+        <div id="bottomLeft" class="bottom-left">
+            <div class="list">
+                <div
+                    class="box"
+                    v-for="item in left"
+                    :key="item.id"
+                    :class="{ selected: isSelected(item) }"
+                    @click="toggleSelection(item)"
+                >
+                    <div>{{ item.name }}</div>
+                </div>
+            </div>
+            <div class="selection-info">Selected: {{ selectedItems.length }}/6</div>
+        </div>
+        <div id="bottomRight" class="bottom-right">
+            <div class="list">
+                <div
+                    class="box"
+                    v-for="item in right"
+                    :key="item.id"
+                    :class="{ 'selected-right': isSelectedRight(item) }"
+                    @click="selectRightItem(item)"
+                >
+                    <div>{{ item.name }}</div>
+                </div>
+            </div>
+            <div class="selection-info">Selected: {{ selectedRightItem ? 1 : 0 }}/1</div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const left = ref([
+    { id: 1, name: 'Shoes 1' },
+    { id: 2, name: 'Shoes 2' },
+    { id: 3, name: 'Shoes 3' },
+    { id: 4, name: 'Shoes 4' },
+    { id: 5, name: 'T-shirt 1' },
+    { id: 6, name: 'T-shirt 2' },
+    { id: 7, name: 'T-shirt 3' },
+    { id: 8, name: 'T-shirt 4' },
+])
+
+const right = ref([
+    { id: 11, name: 'Jacket 1' },
+    { id: 12, name: 'Jacket 2' },
+    { id: 13, name: 'Jacket 3' },
+    { id: 14, name: 'Jacket 4' },
+    { id: 15, name: 'Hoodie 1' },
+    { id: 16, name: 'Hoodie 2' },
+    { id: 17, name: 'Hoodie 3' },
+    { id: 18, name: 'Hoodie 4' },
+])
+
+// Track selected items for left side (multiple selection)
+const selectedItems = ref([])
+const MAX_SELECTION = 6
+
+// Track selected item for right side (single selection)
+const selectedRightItem = ref(null)
+
+// Toggle item selection for left side
+function toggleSelection(item) {
+    const index = selectedItems.value.findIndex((i) => i.id === item.id)
+
+    if (index > -1) {
+        // If already selected, remove it
+        selectedItems.value.splice(index, 1)
+    } else if (selectedItems.value.length < MAX_SELECTION) {
+        // If not selected and under max limit, add it
+        selectedItems.value.push(item)
+    } else {
+        // Optional: Show a message that max selection is reached
+        alert('Maximum selection of 6 items reached')
+    }
+}
+
+// Check if an item is selected in left side
+function isSelected(item) {
+    return selectedItems.value.some((i) => i.id === item.id)
+}
+
+// Select a single item from right side
+function selectRightItem(item) {
+    // If the same item is clicked again, deselect it
+    if (selectedRightItem.value && selectedRightItem.value.id === item.id) {
+        selectedRightItem.value = null
+    } else {
+        // Otherwise, select the new item
+        selectedRightItem.value = item
+    }
+}
+
+// Check if an item is selected in right side
+function isSelectedRight(item) {
+    return selectedRightItem.value && selectedRightItem.value.id === item.id
+}
+</script>
+
+<style scoped>
+.container {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    margin: 0;
+    padding: clamp(10px, 2vw, 20px);
+
+    border: 2px solid black;
+
+    display: grid;
+
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    gap: clamp(10px, 2vw, 20px);
+
+    /* Adjust container width based on screen size */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.top-left {
+    border: 5px solid black;
+    grid-row-start: 1;
+    grid-column-start: 1;
+
+    grid-row-end: 2;
+    grid-column-end: 3;
+}
+.top-right {
+    border: 5px solid black;
+    grid-row-start: 1;
+    grid-column-start: 5;
+
+    grid-row-end: 2;
+    grid-column-end: 7;
+}
+.bottom-left {
+    border: 5px solid black;
+    grid-row-start: 2;
+    grid-column-start: 1;
+
+    grid-row-end: 6;
+    grid-column-end: 4;
+}
+.bottom-right {
+    border: 5px solid black;
+    grid-row-start: 2;
+    grid-column-start: 4;
+
+    grid-row-end: 6;
+    grid-column-end: 7;
+}
+
+.box {
+    border: clamp(2px, 0.5vw, 5px) solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3px;
+    width: clamp(40px, calc(100% - 6px), 80px); /* Responsive width with margin consideration */
+    aspect-ratio: 1/1; /* Maintain square shape */
+    text-align: center;
+    box-sizing: border-box;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    overflow: hidden;
+}
+
+.list {
+    display: grid;
+    /* Always maintain 4 columns */
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(5px, 1.5vw, 15px);
+    justify-items: center;
+    align-content: start;
+    height: 100%;
+    padding: clamp(5px, 1.5vw, 15px);
+    max-width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+}
+
+/* Style for selected items in left side */
+.selected {
+    border-color: #42b983 !important;
+    background-color: rgba(66, 185, 131, 0.1);
+    box-shadow: 0 0 5px rgba(66, 185, 131, 0.5);
+    cursor: pointer;
+}
+
+/* Style for selected item in right side */
+.selected-right {
+    border-color: #e74c3c !important;
+    background-color: rgba(231, 76, 60, 0.1);
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+    cursor: pointer;
+}
+
+/* Make boxes clickable in left side */
+.bottom-left .box {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bottom-left .box:hover {
+    transform: scale(1.05);
+    border-color: #666;
+}
+
+/* Make boxes clickable in right side */
+.bottom-right .box {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bottom-right .box:hover {
+    transform: scale(1.05);
+    border-color: #666;
+}
+
+/* Selection info text */
+.selection-info {
+    text-align: center;
+    margin-top: 4px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Empty state message */
+.empty-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Center single item in topRight */
+.top-right .list {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Different colors for left and right sides */
+.top-left .box {
+    border-color: #42b983;
+}
+
+.top-right .box {
+    border-color: #e74c3c;
+}
+/* Media queries for responsive layout */
+@media (max-width: 768px) {
+    .container {
+        grid-template-rows: auto auto auto;
+        grid-template-columns: 1fr;
+        left: 2%;
+        right: 2%;
+    }
+
+    .top-left {
+        grid-row-start: 1;
+        grid-column-start: 1;
+        grid-row-end: 2;
+        grid-column-end: 2;
+    }
+
+    .top-right {
+        grid-row-start: 2;
+        grid-column-start: 1;
+        grid-row-end: 3;
+        grid-column-end: 2;
+    }
+
+    .bottom-left {
+        grid-row-start: 3;
+        grid-column-start: 1;
+        grid-row-end: 4;
+        grid-column-end: 2;
+    }
+
+    .bottom-right {
+        grid-row-start: 4;
+        grid-column-start: 1;
+        grid-row-end: 5;
+        grid-column-end: 2;
+    }
+
+    /* Adjust box size for smaller screens */
+    .box {
+        width: clamp(30px, 8vw, 60px);
+        height: clamp(30px, 8vw, 60px);
+        font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+    }
+
+    /* Ensure list maintains 4 columns even on small screens */
+    .list {
+        grid-template-columns: repeat(4, 1fr);
+        min-width: 240px; /* Ensure minimum width to fit 4 boxes */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .top-left {
+        grid-column-end: 2;
+    }
+
+    .top-right {
+        grid-column-start: 3;
+        grid-column-end: 4;
+    }
+
+    .bottom-left {
+        grid-column-end: 2;
+    }
+
+    .bottom-right {
+        grid-column-start: 2;
+        grid-column-end: 4;
+    }
+}
+</style>
