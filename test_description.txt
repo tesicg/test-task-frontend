@@ -1,45 +1,34 @@
-<!-- title: Тестовое задание -->
-<p>
-    <h1 align="center">Тестовое задание VueJS</h1>
-    <br>
-</p>
+Test task
 
-> После пуша Vue в ваш репозиторий, сделайте задание в любой другой ветке и PR в основную.  
-> Подойдет как Vue2, так и Vue3
+Task: Make a working page from an image.
 
-</br>
+No design is required. A schematic page, as shown in the image, is enough.
 
+1) Blocks from the bottom:
 
-![IMAGE](image.png "Image")
+On the left - the user's items  
+On the right - things to choose from
 
-Задача: сделать рабочую страницу с изображения.
+2) Blocks on top:
 
-Дизайн не требуется. Достаточно схематичной страницы, как на изображении.
+On the left are selected items from the user's belongings (the block on the bottom is on the left)  
+On the right is the selected item from the items to choose from (the block from the bottom is on the right).
 
-#### Блоки снизу:  
-Слева - вещи у пользователя  
-Справа - вещи на выбор
-
-#### Блоки сверху:  
-Слева - выбранные вещи из вещей пользователя (блок снизу-слева)  
-Справа - выбранная вещь из вещей на выбор (блок снизу-справа).
-
-Объекты вещей имеют одинаковую структуру, отличаются только названием и номером.
+The objects of things have the same structure, they differ only in name and number.
 
 ---
 
-## Механика работы
+The mechanics of work
 
-Снизу-справа можно выбрать одновременно `только 1 вещь`, которая должна отображаться справа-сверху.
-
-Снизу-слева можно выбрать `от 1 до 6 вещей`, которые должны отображаться в верхней левой части в порядке выбора.
+From bottom to right, you can select "only 1 thing" at a time, which should be displayed from top to right.
+From the bottom to the left, you can select "from 1 to 6 things" that should be displayed in the upper-left part in the order of selection.
 
 ---
 
-Коллекции для заполнения нижних блоков слева и справа:
+Collections to fill in the lower blocks on the left and right:
 
-### Блок слева
-```
+1) The block on the left:
+
 [
     {
         "id": 1,
@@ -74,10 +63,9 @@
         "name": "T-shirt 4"
     }
 ]
-```
 
-### Блок справа
-```
+2) The block on the right
+
 [
     {
         "id": 11,
@@ -112,4 +100,3 @@
         "name": "Hoodie 4"
     }
 ]
-```
