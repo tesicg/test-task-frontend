@@ -1,6 +1,6 @@
 # test-task-frontend
 
-Test task
+## Test task
 
 Task: Make a working page from an image.
 
@@ -31,6 +31,7 @@ Collections to fill in the lower blocks on the left and right:
 
 1) The block on the left:
 
+```
 [
     {
         "id": 1,
@@ -65,9 +66,11 @@ Collections to fill in the lower blocks on the left and right:
         "name": "T-shirt 4"
     }
 ]
+```
 
 2) The block on the right
 
+```
 [
     {
         "id": 11,
@@ -102,6 +105,7 @@ Collections to fill in the lower blocks on the left and right:
         "name": "Hoodie 4"
     }
 ]
+```
 
 ## Project Setup
 
