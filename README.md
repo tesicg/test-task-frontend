@@ -4,6 +4,8 @@
 
 Task: Make a working page from an image.
 
+![](test_image.png)
+
 No design is required. A schematic page, as shown in the image, is enough.
 
 1) Blocks from the bottom:
